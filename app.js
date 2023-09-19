@@ -4,7 +4,7 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', async function(req, res, next){
+app.get('/', async function(req, res){
     const { TiktokDL } = require("@tobyg74/tiktok-api-dl");
     TiktokDL(req.url.replace('/?url=','')).then((result) => {
         console.log(result)
@@ -14,8 +14,8 @@ app.get('/', async function(req, res, next){
     });
 });
 
-app.use(function(req, res, next) {
+app.use(function(req, res) {
     res.status(404).json({message: 'Rota inválida', status: 'invalid'});
 });
 
-app.listen(port, () => console.log(`Listening to port ${post}`));
+app.listen(precess.env.PORT || 3001, () => console.log(`Listening to port ${post}`));
