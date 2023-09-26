@@ -4,21 +4,16 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', async function(req, res){
-    const { TiktokDL } = require("@tobyg74/tiktok-api-dl");
-    TiktokDL(req.url.replace('/?url=','')).then((result) => {
-        if(result.status=='success'){
-            res.status(200).json({status: 'success', result: result.result});
-        }else{
-            res.status(400).json({message: 'Falha na requisição', status: 'failed'});
-        }
-    }).catch(() => {
-        res.status(400).json({message: 'Falha na requisição', status: 'failed'});
-    });
-});
+app.use('/tiktok', require('./routes/tiktok'));
+app.use('/instagram', require('./routes/instagram'));
+app.use('/youtube', require('./routes/youtube'));
+//app.use('/facebook', require('./routes/facebook'));
+//app.use('/twitter', require('./routes/twitter'));*/
 
-app.use(function(req, res) {
-    res.status(404).json({message: 'Rota inválida', status: 'invalid'});
+app.use(function(req, res, next) {
+    res.status(404).json({status: 'invalid', message: 'Rota inválida', result: null});
 });
 
 app.listen(3000, () => console.log(`Listening to port 3000`));
+
+exports.handler = app;
